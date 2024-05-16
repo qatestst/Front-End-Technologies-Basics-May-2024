@@ -3,32 +3,35 @@
 body {
     font-family: proxima-nova, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
 nav {
     width: 200px;
-    border: solid, 1px, #e3e3e3;
+    border: 1px solid #e3e3e3;
     font-size: 14px;
     line-height: 20px;
     background-color: #f5f5f5;
 }
+
 li {
     list-style: none;
-    line-height: 10px;
+    line-height: 25px;
     margin-left: -15px;
 }
+
 a {
     text-decoration: none;
     color: #c83025;
     cursor: pointer;
 }
+
 i {
     width: 1.14em;
     padding-right: 0.28em;
 }
+
 button {
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding: 4px 12px;
+    line-height: 20px;
     color: #ffffff;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     cursor: pointer;
@@ -45,9 +48,4 @@ button.info {
 button.delete {
     background-color: #cc4036;
 }
-
-
-
-
-
 
