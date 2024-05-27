@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="server-url" method="post">
+        <label>Username</label>
+        <input type="text" class="info" id="username" name="username" placeholder="type username here">
+
+        <label>Password</label>
+        <input type="password" class="info" id="password" name="Password" placeholder="type Password here">
+        <br>
+        <p>What is your answer?</p>
+        <input type="radio" name="answer?" id="answer1">Yes
+        <input type="radio" name="answer?" id="answer2">No
+        <input type="radio" name="answer?" id="answer3">Not sure
+        <br><br>
+        <input type="email" name="email" id="email" pattern=".+@example\.com" size="50" required placeholder="enter email here"> 
+        <br><br>
+        
+        <input type="color" name="color" id="color" value="#e66465">
+        <br><br>
+        <input type="file" name="file" id="file" accept="image/png, image/jpg">
+        <br><br>
+        <input type="number" name="number" id="number" min="1" max="10" placeholder="number">
+        <br><br>
+        <textarea id="story" name="story"  cols="50"> Write you story here....</textarea>
+        <br><br>
+        <select name="pets" id="pet-select">
+            <option value="none">none</option>
+            <option value="dog">dog</option>
+            <option value="cat">cat</option>
+            <option value="mouse">mouse</option>
+        </select>
+        <br>
+        <br>
+        <fieldset>
+            <legend>New Fieldset Legend</legend>
+        <input list="browser" placeholder="choose browser">
+        <datalist id="browser">
+            <option value="Edge">Edge</option>
+            <option value="Firefox">Firefox</option>
+            <option value="Safari">Safari</option>
+        </datalist>
+        <br>
+        <br>
+        <input type="button" value="submit">
+        <button type="submit" >Type: Submit</button>
+        <br>
+            </fieldset>
+
+    </form>
+</body>
+</html>

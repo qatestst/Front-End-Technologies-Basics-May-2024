@@ -1,0 +1,26 @@
+table {
+    width: 100%;
+    background: #FFF;
+}
+
+table th, table td {
+    border: 1px solid #CCC;
+    padding: 0.3rem 0.5 rem;
+}
+
+table thead th {
+    text-align: left;
+    background: #333;
+    color: #FFF;
+    font-weight: normal;
+}
+
+table tr:nth-child(odd) td{
+    background: #f1f1f1;
+}
+
+table tr:hover td {
+    background: black;
+    color: #FFF;
+    border-color: transparent;
+}
