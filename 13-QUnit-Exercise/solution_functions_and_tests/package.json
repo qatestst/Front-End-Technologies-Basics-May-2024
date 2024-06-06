@@ -1,0 +1,11 @@
+{
+  "name": "function_and_tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "factorial_tests.js",
+  "scripts": {
+    "test": "qunit"
+  },
+  "author": "",
+  "license": "ISC"
+}
