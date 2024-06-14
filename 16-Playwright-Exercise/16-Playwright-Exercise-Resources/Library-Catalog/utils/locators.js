@@ -13,7 +13,15 @@ const LOGIN_FORM = {
 
 }
 
+const LOGGED_NAVBAR = {
+    USER_EMAIL: '//span[text()="Welcome, test@test.bg"]',
+    MY_BOOKS_BUTTON: 'a[href="/profile"]',
+    ADD_BOOK_BUTTON: 'a[href="/create"]',
+    LOGOUT_BUTTON: '#logoutBtn'
+}
+
 export {
     NAVBAR,
-    LOGIN_FORM
+    LOGIN_FORM,
+    LOGGED_NAVBAR
 }
