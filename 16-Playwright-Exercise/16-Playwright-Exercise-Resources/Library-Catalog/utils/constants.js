@@ -12,8 +12,27 @@ const TEST_USER = {
     PASSWORD: '123456'
 }
 
+const ALERT = {
+    ALERT_MESSAGE: 'All fields are required!'
+}
+
+const TEST_BOOK = {
+    TITLE: 'Test book',
+    DESCRIPTION: 'Test description',
+    IMAGE: 'http://example.com/book-mage.jpg',
+    TEST_BOOK_OPTIONS: {
+        FICTION: 'Fiction',
+        ROMANCE: 'Romance',
+        MISTERY: 'Mistery',
+        CLASSIC: 'Clasic',
+        OTHER: 'Other'
+    }
+}
+
 export {
     BASE_URL,
     TEST_URL,
-    TEST_USER
+    TEST_USER,
+    ALERT,
+    TEST_BOOK
 }
