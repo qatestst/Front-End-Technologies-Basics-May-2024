@@ -16,6 +16,14 @@ let user = {
     confirmPass: '123456'
 };
 
+let game = {
+    title: 'Random Title',
+    category: 'Radndom Category',
+    maxLevel: '71',
+    imageUrl: './images/avatar-1.jpg',
+    summary: 'Random summary'
+}
+
 
 describe('e2e tests', () => {
     beforeAll(async () => {
@@ -189,6 +197,142 @@ describe('e2e tests', () => {
 
 
     })
+
+    describe('CRUD', () => {
+        beforeEach(async () => {
+            await page.goto(host);
+
+            await page.click('text=Login');
+            await page.waitForSelector('form');
+            await page.locator('#email').fill(user.email);
+            await page.locator("#login-password").fill(user.password);
+            await page.click('[type="submit"]');
+        });
+
+        test('create does not work with empty fields', async ()=> {
+            //arrange
+            await page.click("text=Create Game");
+            await page.waitForSelector('form');
+
+            //act
+            await page.click('[type="submit"]');
+
+            //assert
+            expect(page.url()).toBe(host + "/create");
+        })
+
+        test('create makes correct API call for logged user', async () => {
+            //arrange
+            await page.click("text=Create Game");
+            await page.waitForSelector('form');
+            
+            //act
+            await page.fill('[name="title"]', game.title); 
+            await page.fill('[name="category"]', game.category); 
+            await page.fill('[name="maxLevel"]', game.maxLevel); 
+            await page.fill('[name="imageUrl"]', game.imageUrl); 
+            await page.fill('[name="summary"]', game.summary);
+            
+            let [response] = await Promise.all([
+                page.waitForResponse(response => response.url().includes('/data/games') && response.status() === 200),
+                page.click('[type="submit"]')
+            ]);
+            let gameData = await response.json();
+
+            //assert
+            await expect(response.ok).toBeTruthy();
+            expect(gameData.title).toEqual(game.title);
+            expect(gameData.category).toEqual(game.category);
+            expect(gameData.maxLevel).toEqual(game.maxLevel);
+            expect(gameData.imageUrl).toEqual(game.imageUrl);
+            expect(gameData.summary).toEqual(game.summary);
+        })
+
+        test('details show eidt/delete buttons for owner', async () => {
+            //arrange
+            await page.goto(host + '/catalog');
+
+            //act
+            await page.click(`.allGames .allGames-info:has-text("Random Title") .details-button`);
+
+            //assert
+            await expect(page.locator('text="Delete"')).toBeVisible();
+            await expect(page.locator('text="Edit"')).toBeVisible();
+        })
+
+        test('non-owner does not see edit/deete buttons', async () => {
+            //arrange
+            await page.goto(host + '/catalog');
+
+            //act
+            await page.click(`.allGames .allGames-info:has-text("Minecraft") .details-button`);
+
+            //assert
+            await expect(page.locator('text="Delete"')).toBeHidden();
+            await expect(page.locator('text="Edit"')).toBeHidden();
+        })
+
+        test('edit makes correct API call', async () =>{
+            //arrange
+            await page.goto(host + "/catalog");
+            await page.click(`.allGames .allGames-info:has-text("Random Title") .details-button`);
+            await page.click('text=Edit');
+
+            //act
+            await page.locator('[name="title"]').fill("Edited title");
+            let [response] = await Promise.all([
+                page.waitForResponse(response => response.url().includes('/data/games') && response.status() === 200),
+                page.click('[type="submit"]')
+            ]);
+            let gameData = await response.json();
+
+            //assert
+            await expect(response.ok).toBeTruthy();
+            expect(gameData.title).toEqual("Edited title");
+            expect(gameData.category).toEqual(game.category);
+            expect(gameData.maxLevel).toEqual(game.maxLevel);
+            expect(gameData.summary).toEqual(game.summary);
+
+        })
+
+        test('delete makes correct API call', async ()=> {
+            //arrange
+            await page.goto(host + "/catalog");
+            await page.click(`.allGames .allGames-info:has-text("Edited title") .details-button`);
+            
+            //act
+            let [response] = await Promise.all([
+                page.waitForResponse(response => response.url().includes('/data/games') && response.status() === 200),
+                page.click('text=Delete')
+            ]);
+            
+            //assert
+            expect(response.ok).toBeTruthy();
+
+        })
+   
+
+    })
+
+    describe('Home page', ()=>{
+        test('Home page has correct data', async ()=> {
+            //arrange
+            await page.goto(host);
+
+            //assert
+            await expect(page.locator(".welcome-message h2")).toHaveText("ALL new games are");
+            await expect(page.locator(".welcome-message h3")).toHaveText("Only in GamesPlay");
+            await expect(page.locator("#home-page h1")).toHaveText("Latest Games");
+
+            const games = await page.locator('#home-page .game').all();
+            //expect(games.length).toEqual(4);
+            expect(games.length).toBeGreaterThanOrEqual(3);
+        })
+    })
+
+    //TODO - Other TESTS N:9** - Make Better Test Coverage
+
+
 
 })
 
