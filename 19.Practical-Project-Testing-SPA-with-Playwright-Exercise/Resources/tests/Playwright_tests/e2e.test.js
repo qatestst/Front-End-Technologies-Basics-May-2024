@@ -1,4 +1,6 @@
 // To run tests type in Terminal #npx playwright test e2e.test.js
+// To run tests with UI type in Terminal # npx playwright test e2e.test.js --ui
+
 const {test, describe, beforeEach, afterEach, beforeAll, afterAll, expect} = require('@playwright/test');
 const {chromium} = require('playwright');
 
