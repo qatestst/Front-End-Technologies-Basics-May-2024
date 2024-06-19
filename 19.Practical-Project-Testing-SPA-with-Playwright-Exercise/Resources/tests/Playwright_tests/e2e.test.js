@@ -1,5 +1,6 @@
 // To run tests type in Terminal #npx playwright test e2e.test.js
 // To run tests with UI type in Terminal # npx playwright test e2e.test.js --ui
+// To run tests with Debug mode type in Terminal # npx playwright test e2e.test.js --debug
 
 const {test, describe, beforeEach, afterEach, beforeAll, afterAll, expect} = require('@playwright/test');
 const {chromium} = require('playwright');
@@ -37,7 +38,7 @@ describe('e2e tests', () => {
 
     describe ('authentication', () => {
     
-        test('register does not work with empty fields', async () => {
+        test('register makes correct API calls', async () => {
             await page.goto(host);
             await page.click('text=Register'); //Click on the 'Register' button Playwright ще изчака да види текст “Register” на страницата и след това ще извърши клик върху него
             //Wait for the register form to load
@@ -66,6 +67,127 @@ describe('e2e tests', () => {
             expect(userData.password).toEqual(user.password);
             
         })
+
+        test('register does not work with empty fields', async () => {
+            //arrange
+            await page.goto(host);
+
+            //act
+            await page.click('text=Register');
+            await page.click('[type="submit"]');
+
+            //assert
+            expect(page.url()).toBe(host+'/register');
+        })
+
+        test('login makes correct API calls', async () => {
+            //arrange
+            await page.goto(host);
+            await page.click('text=Login');
+            await page.waitForSelector("form");
+
+            //act
+            await page.locator('#email').fill(user.email);
+            await page.locator('#login-password').fill(user.password);
+            
+            let [response] = await Promise.all([
+                page.waitForResponse(response => response.url().includes('/users/login') && response.status() === 200),
+                page.click('[type="submit"]')
+            ]);
+
+            let userData = await response.json();
+
+            //assert
+            expect(response.ok()).toBeTruthy();
+            expect(userData.email).toBe(user.email);
+            expect(userData.password).toBe(user.password);
+
+
+
+
+
+
+        })
+
+        test('login does not work with empty fields', async () => {
+            //arrange
+            await page.goto(host);
+            await page.click('text=Login');
+            await page.waitForSelector("form");
+
+            //act
+            await page.click('[type="submit"]');
+
+            //assert
+            expect(page.url()).toBe(host + '/login');
+
+
+        })
+
+        test('logout makes correct API call', async () =>{
+            //arrange
+            await page.goto(host);
+            await page.click('text=Login');
+            await page.waitForSelector('form');
+
+            await page.locator('#email').fill(user.email);
+            await page.locator('#login-password').fill(user.password);
+            await page.click('[type="submit"]');
+
+           //act 
+           let [response] = await Promise.all([
+                page.waitForResponse(response => response.url().includes('/users/logout') && response.status() === 204),
+                page.click('text=Logout')
+           ])
+           await page.waitForSelector('text=Login');
+
+           //assert
+           expect(response.ok).toBeTruthy();
+           expect(page.url()).toBe(host + '/');
+
+
+
+        })
+
+
+
+    })
+
+    describe('navigation bar', () => {
+        test('logged user should see correct navigation buttons', async () =>{
+            //arrange
+            await page.goto(host);
+            //act
+            await page.click('text=Login');
+            await page.waitForSelector('form');
+            await page.locator('#email').fill(user.email);
+            await page.locator('#login-password').fill(user.password);
+            await page.click('[type="submit"]');
+
+            //assert
+            await expect(page.locator('nav >> text=All games')).toBeVisible();
+            await expect(page.locator('nav >> text=Create Game')).toBeVisible();
+            await expect(page.locator('nav >> text=logout')).toBeVisible();
+            await expect(page.locator('nav >> text=Login')).toBeHidden();
+            await expect(page.locator('nav >> text=Register')).toBeHidden();
+
+        })
+
+        test('guest user should see correct navigation buttons', async () =>{
+            //act
+            await page.goto(host);            
+
+            //assert
+            await expect(page.locator('nav >> text=All games')).toBeVisible();
+            await expect(page.locator('nav >> text=Create Game')).toBeHidden();
+            await expect(page.locator('nav >> text=logout')).toBeHidden();
+            await expect(page.locator('nav >> text=Login')).toBeVisible();
+            await expect(page.locator('nav >> text=Register')).toBeVisible();
+
+        })
+
+
+
     })
 
 })
