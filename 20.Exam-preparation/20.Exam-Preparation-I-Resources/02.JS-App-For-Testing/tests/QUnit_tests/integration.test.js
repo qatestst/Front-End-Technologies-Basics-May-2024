@@ -11,6 +11,8 @@ let user = {
 let userId;
 let token;
 
+let lastCreatedMemeId;
+
 QUnit.module('User functionalities', ()=>{
     QUnit.test('User registration', async (assert)=>{
         //arrange
