@@ -47,8 +47,7 @@ function addButtonFunction(e){
     buttonsContainerSnowmanPreview.setAttribute('class', 'btn-container')
 
     
-  
-  // create paragraphs
+    // create paragraphs
     let snowmanNameParagraph = document.createElement('p');
     let snowmanHeightParagraph = document.createElement('p');
     let snowmanLocationParagraph = document.createElement('p');
@@ -127,9 +126,74 @@ function addButtonFunction(e){
 
     nextButton.addEventListener("click", nextButtonFunction);
     
+    function nextButtonFunction(){
+      // create 'li' elements for 'Your snowman' and set 'class'
+      let liElementYourSnowman = document.createElement('li');
+      liElementYourSnowman.setAttribute('class', 'snowman-content');
+
+      // create article for 'Your Snowman' and get data from articleSnowmanPreview
+      let articleElementYourSnowman = document.createElement('article');
+      
+      //get data from 'articleSnowmanPreview' - the data for Name, Height, Location, Creator, Attribute
+      articleElementYourSnowman = articleSnowmanPreview;
+
+      // Append 'articleElementYourSnowman' as a child to 'liElementYourSnowman'
+      liElementYourSnowman.appendChild(articleElementYourSnowman);
+
+      // Append 'liElementYourSnowman' as a child to 'yourSnowmanList' to show data on the webpage
+      yourSnowmanList.appendChild(liElementYourSnowman);
+      
+      //Then remove [Edit] and [Next] buttons from 'Snowman Preview'
+      buttonsContainerSnowmanPreview.remove();
+
+      // create [Send] button in 'Your Snowman'
+      let sendButton = document.createElement('button');
+      sendButton.setAttribute("class", "send-btn");
+      sendButton.textContent = 'Send';
+
+      //append [Send] button to 'articleElementYourSnowman'
+      articleElementYourSnowman.appendChild(sendButton);
+
+      // add eventListener to [Send] button
+      sendButton.addEventListener('click', sendButtonFunction);
+
+      function sendButtonFunction() {
+        // remove 'main' document element - this removes all elements on webpage
+        main.remove();
+        
+        //Create [Back] button - on click reload webpage
+        let backButton = document.createElement('button');
+        backButton.setAttribute('class', 'back-button');
+        backButton.textContent = 'Back';
+
+        // make back image visible
+        backImg.hidden = false;
+
+        // append [Back] button to body dosument element to make button visible
+        bodyElement.appendChild(backButton);
+
+        // add eventListener to [Back] button
+        backButton.addEventListener('click', backButtonFunction);
+
+        function backButtonFunction() {
+          window.location.reload();
+        }
+
+      }
 
 
-  
+
+
+
+     
+      
+      
+      
+     
+
+
+
+    }
 
 }
 
